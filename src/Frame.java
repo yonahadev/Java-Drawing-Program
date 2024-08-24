@@ -5,7 +5,9 @@ public class Frame {
         int width = 640;
         int height = 480;
         JFrame frame = new JFrame();
+        Mouse mouse = new Mouse();
         Canvas canvas = new Canvas(width,height);
+        canvas.addMouseListener(mouse);
         frame.setSize(width,height);
         frame.setTitle("FRAME MENTIONED ? WHAT EVEN IS AN ENGINE");
         frame.add(canvas);
