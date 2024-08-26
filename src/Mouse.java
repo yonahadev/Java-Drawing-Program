@@ -4,6 +4,8 @@ public class Mouse extends MouseAdapter {
     private  Canvas canvas;
     private boolean mouseHeld = false;
 
+    private int radius = 20;
+
     public Mouse (Canvas c) {
         canvas = c;
     };
@@ -13,6 +15,6 @@ public class Mouse extends MouseAdapter {
         int x = e.getX();
         int y = e.getY();
 //        System.out.println(e.getX()+" "+e.getY());
-        canvas.paintPixel(x,y);
+        canvas.paintPixel(x,y,radius);
     }
 }

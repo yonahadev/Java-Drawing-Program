@@ -26,9 +26,19 @@ public class Canvas extends JComponent {
         }
     }
 
-    public void paintPixel(int x, int y) {
-        cells[x][y] = grey;
-
+    public void paintPixel(int x, int y,int radius) {
+        int half = Math.floorDiv(radius,2);
+        for (int i = -half; i < half; i++ ) {
+            for (int j = -half; j < half; j++) {
+                int currentX = x+i;
+                int currentY = y+j;
+                boolean validX = currentX >= 0 && currentX < width;
+                boolean validY = currentY >= 0 && currentY < height;
+                if (i*i+j*j < radius && validY && validX) {
+                    cells[x + i][y + j] = grey;
+                }
+            }
+        }
         repaint();
 //        System.out.println(cells[x][y]);
     }
