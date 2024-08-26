@@ -8,7 +8,7 @@ public class Canvas extends JComponent {
     private int width;
     private int height;
 
-    private int[][] cells;
+    private Color[][] cells;
 
     private Color grey = new Color(20 ,20,20);
     private Color white = new Color(255,255,255);
@@ -18,16 +18,19 @@ public class Canvas extends JComponent {
     public Canvas(int w, int h) {
         width = w;
         height = h;
-        cells = new int[w][h];
-//        System.out.println(Arrays.deepToString(cells));
+        cells = new Color[w][h];
+        for (int i = 0; i < width; i ++) {
+            for (int j = 0; j < height; j ++) {
+                cells[i][j] = white;
+            }
+        }
     }
 
-    public void changeColour() {
-        if (selectedColor == white) {
-            selectedColor = grey;
-        } else {
-            selectedColor = white;
-        }
+    public void paintPixel(int x, int y) {
+        cells[x][y] = grey;
+
+        repaint();
+//        System.out.println(cells[x][y]);
     }
 
     protected void paintComponent(Graphics g) {
@@ -36,11 +39,16 @@ public class Canvas extends JComponent {
         Rectangle2D.Double bg = new Rectangle2D.Double(0,0,width,height);
         g2d.setColor(grey);
         g2d.fill(bg);
-        g2d.setColor(selectedColor);
-        for (int i = 0; i <= width; i ++) {
-            for (int j = 0; j <= height; j ++) {
+        for (int i = 0; i < width; i ++) {
+            for (int j = 0; j < height; j ++) {
                 int x = i;
                 int y = j;
+                Color color = cells[x][y];
+                if (color == grey) {
+                    System.out.println("Grey" + " " + x + " " + y);
+                }
+                g2d.setColor(color);
+
                 Rectangle2D.Double r = new Rectangle2D.Double(x,y,1,1);
                 g2d.fill(r);
             }

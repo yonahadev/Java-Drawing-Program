@@ -8,6 +8,7 @@ public class Frame {
         Canvas canvas = new Canvas(width,height);
         Mouse mouse = new Mouse(canvas);
         canvas.addMouseListener(mouse);
+        canvas.addMouseMotionListener(mouse);
         frame.setSize(width,height);
         frame.setTitle("FRAME MENTIONED ? WHAT EVEN IS AN ENGINE");
         frame.add(canvas);

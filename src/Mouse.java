@@ -2,15 +2,17 @@ import java.awt.event.*;
 
 public class Mouse extends MouseAdapter {
     private  Canvas canvas;
+    private boolean mouseHeld = false;
 
     public Mouse (Canvas c) {
         canvas = c;
     };
 
-    public void mouseClicked (MouseEvent e) {
-        System.out.println(e.getX());
-        canvas.changeColour();
-        canvas.repaint();
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+//        System.out.println(e.getX()+" "+e.getY());
+        canvas.paintPixel(x,y);
     }
-
 }
