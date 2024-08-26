@@ -4,7 +4,7 @@ public class Mouse extends MouseAdapter {
     private  Canvas canvas;
     private boolean mouseHeld = false;
 
-    private int radius = 20;
+    private int radius = 10;
 
     public Mouse (Canvas c) {
         canvas = c;

@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.MouseAdapter;
 
@@ -12,21 +14,30 @@ public class Canvas extends JComponent {
 
     private Color grey = new Color(20 ,20,20);
     private Color white = new Color(255,255,255);
-
     private Color selectedColor = white;
+
+    private BufferedImage bufferedImage;
 
     public Canvas(int w, int h) {
         width = w;
         height = h;
         cells = new Color[w][h];
-        for (int i = 0; i < width; i ++) {
-            for (int j = 0; j < height; j ++) {
+        bufferedImage = new BufferedImage(w,h,BufferedImage.TYPE_4BYTE_ABGR);
+        for (int i = 0; i < w; i ++) { //init in array
+            for (int j = 0; j < h; j ++) {
                 cells[i][j] = white;
             }
         }
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.setColor(white);
+        g2d.fillRect(0,0,w,h);
+        g2d.dispose();
+        repaint();
     }
 
     public void paintPixel(int x, int y,int radius) {
+
+        Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
         int half = Math.floorDiv(radius,2);
         for (int i = -half; i < half; i++ ) {
             for (int j = -half; j < half; j++) {
@@ -35,33 +46,19 @@ public class Canvas extends JComponent {
                 boolean validX = currentX >= 0 && currentX < width;
                 boolean validY = currentY >= 0 && currentY < height;
                 if (i*i+j*j < radius && validY && validX) {
-                    cells[x + i][y + j] = grey;
+                    Rectangle2D.Double r = new Rectangle2D.Double(currentX, currentY, 1, 1); //draws on existing graphic
+                    g2d.setColor(grey);
+                    g2d.fill(r);
                 }
             }
         }
+        g2d.dispose(); //deletes it in this scope but maintains what was drawn
         repaint();
-//        System.out.println(cells[x][y]);
     }
 
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        //background
-        Rectangle2D.Double bg = new Rectangle2D.Double(0,0,width,height);
-        g2d.setColor(grey);
-        g2d.fill(bg);
-        for (int i = 0; i < width; i ++) {
-            for (int j = 0; j < height; j ++) {
-                int x = i;
-                int y = j;
-                Color color = cells[x][y];
-                if (color == grey) {
-                    System.out.println("Grey" + " " + x + " " + y);
-                }
-                g2d.setColor(color);
-
-                Rectangle2D.Double r = new Rectangle2D.Double(x,y,1,1);
-                g2d.fill(r);
-            }
-        }
+        System.out.println("Repainting");
+        g2d.drawImage(bufferedImage,0,0,null);
     }
 }
