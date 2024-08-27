@@ -1,3 +1,5 @@
+import util.Tuple;
+
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
@@ -18,6 +20,8 @@ public class Canvas extends JComponent {
 
     private BufferedImage bufferedImage;
 
+    private Tuple lastMousePos;
+
     public Canvas(int w, int h) {
         width = w;
         height = h;
@@ -35,9 +39,11 @@ public class Canvas extends JComponent {
         repaint();
     }
 
-    public void paintPixel(int x, int y,int radius) {
+    public void clearMousePos() {
+        lastMousePos = null;
+    }
 
-        Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
+    private void paintRadius(int x, int y, int radius, Graphics2D g2d) {
         int half = Math.floorDiv(radius,2);
         for (int i = -half; i < half; i++ ) {
             for (int j = -half; j < half; j++) {
@@ -52,8 +58,20 @@ public class Canvas extends JComponent {
                 }
             }
         }
+    }
+
+    public void paint(int x, int y,int radius) {
+
+        if (lastMousePos == null) {
+
+        }
+
+        Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
+        paintRadius(x,y,radius,g2d);
         g2d.dispose(); //deletes it in this scope but maintains what was drawn
+
         repaint();
+        lastMousePos = new Tuple(x,y);
     }
 
     protected void paintComponent(Graphics g) {

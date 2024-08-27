@@ -1,8 +1,7 @@
 import java.awt.event.*;
 
 public class Mouse extends MouseAdapter {
-    private  Canvas canvas;
-    private boolean mouseHeld = false;
+    private final Canvas canvas;
 
     private int radius = 10;
 
@@ -10,11 +9,19 @@ public class Mouse extends MouseAdapter {
         canvas = c;
     };
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
+    private void paintAtMouseLocation(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-//        System.out.println(e.getX()+" "+e.getY());
-        canvas.paintPixel(x,y,radius);
+        canvas.paint(x,y,radius);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        canvas.clearMousePos();
+        paintAtMouseLocation(e);
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        paintAtMouseLocation(e);
     }
 }
