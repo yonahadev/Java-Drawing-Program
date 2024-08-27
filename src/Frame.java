@@ -2,8 +2,8 @@ import javax.swing.*;
 
 public class Frame {
     public static void main(String[] args) {
-        int width = 1500;
-        int height = 1000;
+        int width = 500;
+        int height = 500;
         JFrame frame = new JFrame();
         Canvas canvas = new Canvas(width,height);
         Mouse mouse = new Mouse(canvas);

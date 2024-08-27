@@ -61,22 +61,51 @@ public class Canvas extends JComponent {
     }
 
     public void paint(int x, int y,int radius) {
-
+        Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
         if (lastMousePos == null) {
+            paintRadius(x,y,radius,g2d);
+        } else {
+            Tuple currentMousePos = new Tuple(x,y);
+
+
+
+            //use y = mx + c
+            double changeInY = currentMousePos.y- lastMousePos.y;
+            double changeInX = currentMousePos.x - lastMousePos.x;
+            double m = 0;
+            if (changeInX != 0 && changeInY != 0) {
+                m = changeInY/changeInX;
+            }
+
+            double c = -m*currentMousePos.x + currentMousePos.y;
+
+            System.out.println(lastMousePos.x + " " + lastMousePos.y + " " + currentMousePos.x + " " + currentMousePos.y);
+            System.out.println("Gradient " + m + " Intercept "+ c);
+
+            if (lastMousePos.x < currentMousePos.x) {
+                for (int i = lastMousePos.x; i < currentMousePos.x; i ++) {
+                    double yPos = m*i+c;
+                    int roundedY = (int) Math.floor(yPos);
+                    paintRadius(i,roundedY,radius,g2d);
+                }
+            } else {
+                for (int i = currentMousePos.x; i < lastMousePos.x; i ++) {
+                    double yPos = m*i+c;
+                    int roundedY = (int) Math.floor(yPos);
+                    paintRadius(i,roundedY,radius,g2d);
+                }
+            }
 
         }
+        //deletes it in this scope but maintains what was drawn
 
-        Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
-        paintRadius(x,y,radius,g2d);
-        g2d.dispose(); //deletes it in this scope but maintains what was drawn
-
+        g2d.dispose();
         repaint();
         lastMousePos = new Tuple(x,y);
     }
 
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        System.out.println("Repainting");
         g2d.drawImage(bufferedImage,0,0,null);
     }
 }
