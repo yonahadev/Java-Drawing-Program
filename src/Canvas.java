@@ -88,6 +88,17 @@ public class Canvas extends JComponent {
                     int roundedY = (int) Math.floor(yPos);
                     paintRadius(i,roundedY,radius,g2d);
                 }
+            } else if(m == 0) {
+                if (lastMousePos.y > currentMousePos.y) {
+                    for (int i = currentMousePos.y; i < lastMousePos.y; i ++) {
+                        paintRadius(currentMousePos.x,i,radius,g2d);
+                    }
+                } else {
+                    for (int i = lastMousePos.y; i < currentMousePos.y; i ++) {
+                        paintRadius(currentMousePos.x,i,radius,g2d);
+                    }
+                }
+
             } else {
                 for (int i = currentMousePos.x; i < lastMousePos.x; i ++) {
                     double yPos = m*i+c;

@@ -3,7 +3,7 @@ import java.awt.event.*;
 public class Mouse extends MouseAdapter {
     private final Canvas canvas;
 
-    private int radius = 10;
+    private int radius = 5;
 
     public Mouse (Canvas c) {
         canvas = c;
