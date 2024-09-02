@@ -20,6 +20,7 @@ public class Canvas extends JComponent {
 
     private BufferedImage bufferedImage;
 
+    private int radius = 5;
 
     private Tuple lastMousePos;
 
@@ -38,6 +39,14 @@ public class Canvas extends JComponent {
         selectedColor = color;
     }
 
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int newRadius) {
+        radius = newRadius;
+    }
+
     public void resetCanvas() {
         cells = new Color[width][height];
         bufferedImage = new BufferedImage(width,height,BufferedImage.TYPE_4BYTE_ABGR);
@@ -53,7 +62,7 @@ public class Canvas extends JComponent {
         repaint();
     }
 
-    private void paintRadius(int x, int y, int radius, Graphics2D g2d) {
+    private void paintRadius(int x, int y, Graphics2D g2d) {
         int half = Math.floorDiv(radius,2);
         for (int i = -half; i < half; i++ ) {
             for (int j = -half; j < half; j++) {
@@ -70,12 +79,12 @@ public class Canvas extends JComponent {
         }
     }
 
-    public void paint(int x, int y,int radius) {
+    public void paint(int x, int y) {
         x -= offset.x;
         y -= offset.y;
         Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
         if (lastMousePos == null) {
-            paintRadius(x,y,radius,g2d);
+            paintRadius(x,y,g2d);
         } else {
             Tuple currentMousePos = new Tuple(x,y);
 
@@ -101,16 +110,16 @@ public class Canvas extends JComponent {
                 for (int i = lastMousePos.x; i < currentMousePos.x; i ++) {
                     double yPos = m*i+c;
                     int roundedY = (int) Math.floor(yPos);
-                    paintRadius(i,roundedY,radius,g2d);
+                    paintRadius(i,roundedY,g2d);
                 }
             } else if(m == 0) {
                 if (lastMousePos.y > currentMousePos.y) {
                     for (int i = currentMousePos.y; i < lastMousePos.y; i ++) {
-                        paintRadius(currentMousePos.x,i,radius,g2d);
+                        paintRadius(currentMousePos.x,i,g2d);
                     }
                 } else {
                     for (int i = lastMousePos.y; i < currentMousePos.y; i ++) {
-                        paintRadius(currentMousePos.x,i,radius,g2d);
+                        paintRadius(currentMousePos.x,i,g2d);
                     }
                 }
 
@@ -118,7 +127,7 @@ public class Canvas extends JComponent {
                 for (int i = currentMousePos.x; i < lastMousePos.x; i ++) {
                     double yPos = m*i+c;
                     int roundedY = (int) Math.floor(yPos);
-                    paintRadius(i,roundedY,radius,g2d);
+                    paintRadius(i,roundedY,g2d);
                 }
             }
 

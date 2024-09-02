@@ -19,8 +19,28 @@ public class Frame {
         buttonPanel.setLayout(new FlowLayout());
         JButton clear = new JButton("Clear");
         JButton eraser = new JButton("Eraser");
+        JButton decrement = new JButton("-");
+        JButton increment = new JButton("+");
+        JLabel radius = new JLabel(String.valueOf(canvas.getRadius()));
         buttonPanel.add(clear);
         buttonPanel.add(eraser);
+        buttonPanel.add(decrement);
+        buttonPanel.add(radius);
+        buttonPanel.add(increment);
+
+
+
+        increment.addActionListener(e -> {
+            int currentRadius = canvas.getRadius();
+            canvas.setRadius(currentRadius+1);
+            radius.setText(String.valueOf(canvas.getRadius()));
+        });
+
+        decrement.addActionListener(e -> {
+            int currentRadius = canvas.getRadius();
+            canvas.setRadius(currentRadius-1);
+            radius.setText(String.valueOf(canvas.getRadius()));
+        });
 
         eraser.addActionListener(e -> {
             canvas.setSelectedColor(Colors.WHITE.getColor());

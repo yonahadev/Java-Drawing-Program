@@ -3,7 +3,6 @@ import java.awt.event.*;
 public class Mouse extends MouseAdapter {
     private final Canvas canvas;
 
-    private int radius = 5;
 
     public Mouse (Canvas c) {
         canvas = c;
@@ -12,7 +11,7 @@ public class Mouse extends MouseAdapter {
     private void paintAtMouseLocation(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        canvas.paint(x,y,radius);
+        canvas.paint(x,y);
     }
 
     @Override
