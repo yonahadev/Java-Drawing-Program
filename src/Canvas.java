@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 public class Canvas extends JComponent {
     private int width;
     private int height;
+    private Tuple offset;
 
     private Color[][] cells;
 
@@ -22,7 +23,8 @@ public class Canvas extends JComponent {
 
     private Tuple lastMousePos;
 
-    public Canvas(int w, int h) {
+    public Canvas(int w, int h, Tuple offset) {
+        this.offset = offset;
         width = w;
         height = h;
         cells = new Color[w][h];
@@ -34,7 +36,7 @@ public class Canvas extends JComponent {
         }
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(white);
-        g2d.fillRect(0,0,w,h);
+        g2d.fillRect(0, 0, w,h);
         g2d.dispose();
         repaint();
     }
@@ -61,6 +63,8 @@ public class Canvas extends JComponent {
     }
 
     public void paint(int x, int y,int radius) {
+        x -= offset.x;
+        y -= offset.y;
         Graphics2D g2d = bufferedImage.createGraphics(); //creates graphic
         if (lastMousePos == null) {
             paintRadius(x,y,radius,g2d);
@@ -70,8 +74,8 @@ public class Canvas extends JComponent {
 
 
             //use y = mx + c
-            double changeInY = currentMousePos.y- lastMousePos.y;
-            double changeInX = currentMousePos.x - lastMousePos.x;
+            double changeInY = currentMousePos.y-lastMousePos.y;
+            double changeInX = currentMousePos.x-lastMousePos.x;
             double m = 0;
             if (changeInX != 0 && changeInY != 0) {
                 m = changeInY/changeInX;
@@ -117,6 +121,6 @@ public class Canvas extends JComponent {
 
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(bufferedImage,0,0,null);
+        g2d.drawImage(bufferedImage,offset.x, offset.y, null);
     }
 }
