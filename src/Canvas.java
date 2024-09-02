@@ -21,28 +21,33 @@ public class Canvas extends JComponent {
 
     private BufferedImage bufferedImage;
 
+
     private Tuple lastMousePos;
 
     public Canvas(int w, int h, Tuple offset) {
         this.offset = offset;
         width = w;
         height = h;
-        cells = new Color[w][h];
-        bufferedImage = new BufferedImage(w,h,BufferedImage.TYPE_4BYTE_ABGR);
-        for (int i = 0; i < w; i ++) { //init in array
-            for (int j = 0; j < h; j ++) {
+        resetCanvas();
+    }
+
+    public void clearMousePos() {
+        lastMousePos = null;
+    }
+
+    public void resetCanvas() {
+        cells = new Color[width][height];
+        bufferedImage = new BufferedImage(width,height,BufferedImage.TYPE_4BYTE_ABGR);
+        for (int i = 0; i < width; i ++) { //init in array
+            for (int j = 0; j < height; j ++) {
                 cells[i][j] = white;
             }
         }
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(white);
-        g2d.fillRect(0, 0, w,h);
+        g2d.fillRect(0, 0, width,height);
         g2d.dispose();
         repaint();
-    }
-
-    public void clearMousePos() {
-        lastMousePos = null;
     }
 
     private void paintRadius(int x, int y, int radius, Graphics2D g2d) {
