@@ -1,3 +1,4 @@
+import util.Colors;
 import util.Tuple;
 
 import javax.swing.*;
@@ -20,6 +21,10 @@ public class Frame {
         JButton eraser = new JButton("Eraser");
         buttonPanel.add(clear);
         buttonPanel.add(eraser);
+
+        eraser.addActionListener(e -> {
+            canvas.setSelectedColor(Colors.WHITE.getColor());
+        });
 
         clear.addActionListener(e -> {
             System.out.println("Clear Canvas");

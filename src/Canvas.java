@@ -1,3 +1,4 @@
+import util.Colors;
 import util.Tuple;
 
 import java.awt.*;
@@ -15,9 +16,7 @@ public class Canvas extends JComponent {
 
     private Color[][] cells;
 
-    private Color grey = new Color(20 ,20,20);
-    private Color white = new Color(255,255,255);
-    private Color selectedColor = white;
+    private Color selectedColor = Colors.BLACK.getColor();
 
     private BufferedImage bufferedImage;
 
@@ -35,16 +34,20 @@ public class Canvas extends JComponent {
         lastMousePos = null;
     }
 
+    public void setSelectedColor(Color color) {
+        selectedColor = color;
+    }
+
     public void resetCanvas() {
         cells = new Color[width][height];
         bufferedImage = new BufferedImage(width,height,BufferedImage.TYPE_4BYTE_ABGR);
         for (int i = 0; i < width; i ++) { //init in array
             for (int j = 0; j < height; j ++) {
-                cells[i][j] = white;
+                cells[i][j] = Colors.WHITE.getColor();
             }
         }
         Graphics2D g2d = bufferedImage.createGraphics();
-        g2d.setColor(white);
+        g2d.setColor(Colors.WHITE.getColor());
         g2d.fillRect(0, 0, width,height);
         g2d.dispose();
         repaint();
@@ -60,7 +63,7 @@ public class Canvas extends JComponent {
                 boolean validY = currentY >= 0 && currentY < height;
                 if (i*i+j*j < radius && validY && validX) {
                     Rectangle2D.Double r = new Rectangle2D.Double(currentX, currentY, 1, 1); //draws on existing graphic
-                    g2d.setColor(grey);
+                    g2d.setColor(selectedColor);
                     g2d.fill(r);
                 }
             }
@@ -88,8 +91,11 @@ public class Canvas extends JComponent {
 
             double c = -m*currentMousePos.x + currentMousePos.y;
 
-            System.out.println(lastMousePos.x + " " + lastMousePos.y + " " + currentMousePos.x + " " + currentMousePos.y);
-            System.out.println("Gradient " + m + " Intercept "+ c);
+            if (m != 0) {
+                System.out.println(lastMousePos.x + " " + lastMousePos.y + " " + currentMousePos.x + " " + currentMousePos.y);
+                System.out.println("Gradient " + m + " Intercept "+ c);
+            }
+
 
             if (lastMousePos.x < currentMousePos.x) {
                 for (int i = lastMousePos.x; i < currentMousePos.x; i ++) {
